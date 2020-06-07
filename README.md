@@ -108,7 +108,34 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - aside: Chomsky/universal grammar/“merge” operator; language ~ recursive combination
 
 - effects can be factored arbitrarily small
-  - Error ~ the language of catchable failures with an error
-  - Reader ~ the language of a single locally-configurable parameter
-  - State ~ the language of a single mutable variable
+  - `Error` ~ the language of catchable failures with an error
+  - `Reader` ~ the language of a single locally-configurable parameter
+  - `State` ~ the language of a single mutable variable
   - aside: “the” rather than “a” is notional; might be other expressions of same concept
+
+
+## Costs of abstraction
+
+- indirection
+- potentially, efficiency
+- semantics; assumptions
+
+
+## Laws
+
+- `put`’s type doesn’t constrain the use of the parameter
+- assumptions of relationship between `get` & `put` are key to using `State`
+  - e.g. using `State` to guard recursive graph traversal
+  - if `put` silently drops writes, cyclic graph -> divergence
+- laws relate operations of an effect to one another
+
+- refined definition of effect:
+  - effect specifies syntax (interface) & _relationships between them (laws)_
+  - handler specifies semantics (implementation) _satisfying these laws_
+
+- laws also relate to control flow: `return` & `>>=`
+
+- examples:
+  - `State`
+    - handler for `put` cannot drop writes
+  - `Error`
