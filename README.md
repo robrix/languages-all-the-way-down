@@ -7,9 +7,11 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 
 - me
 - languages?
-- law of the implement
 
-- will define algebraic effects & effect handlers later
+- caveats
+  - law of the implement/“everything looks like a compilers problem”
+  - assume some familiarity with monads/monad transformers
+  - will define algebraic effects & effect handlers later
 
 - effects & handlers are useful for pragmatic software engineering
 - effects & handlers allow us to view application architecture & design through the lens of language design
@@ -64,6 +66,8 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - modularity
 - composability
 - abstraction
+  - polymorphism
+    - cf typeclasses; dependency injection; inversion of control
 
 
 ## Effects, more formally
@@ -80,3 +84,31 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - allows clear delineation between the code we wish to write & the code we wish to execute
 - allows distinct execution strategies which can be selected arbitrarily at compile time or runtime
 - compilers!
+
+
+## Effects as languages
+
+- language design is concerned with syntax and semantics
+  - syntax gives structure of expressions
+    - structure ~ symbols & where they can occur (e.g. types) ~ operations
+  - semantics assigns them meaning
+    - “operational semantics”: meaning ~ control flow ~ implementation
+- literature on effects often refers to operations as defining syntax and handlers as defining semantics
+- syntax/semantics ~= interface/implementation
+- effect/handler ~= language
+
+
+## “Language” scope
+
+- “language” sounds really big! Haskell, Go, etc.
+- “domain specific language” is closer
+- but SQL is a DSL, still really big!
+- “embedded domain specific language” is closer
+- but Rails DSLs can still be pretty big
+- aside: Chomsky/universal grammar/“merge” operator; language ~ recursive combination
+
+- effects can be factored arbitrarily small
+  - Error ~ the language of catchable failures with an error
+  - Reader ~ the language of a single locally-configurable parameter
+  - State ~ the language of a single mutable variable
+  - aside: “the” rather than “a” is notional; might be other expressions of same concept
