@@ -4,6 +4,7 @@ module Main where
 -- base
 import qualified Control.Exception as E
 import           Data.Foldable (for_)
+import           System.IO (hPutStrLn, stderr)
 
 -- transformers
 import qualified Control.Monad.Trans.Except as T
@@ -50,6 +51,9 @@ f =<< x (for pure function f and computation x)
 
 
 -- IO actions give us no guarantees about what they can do:
+
+innocuous :: IO ()
+innocuous = hPutStrLn stderr $ repeat '✨'
 
 -- ioAction :: IO ()
 -- ioAction = E.throwTo fan glitter
