@@ -150,4 +150,4 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - express behaviour as equations
 - typically relate effects to “canonical” handlers
 - admit _useful_ variance in implementations
-- admit interactions with other effects via more laws
+- admit interactions with other effects
