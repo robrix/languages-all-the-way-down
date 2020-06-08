@@ -41,6 +41,7 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
   - errors
   - state
   - nondet
+- also, effects ~= monads
 
 
 ## Partial approaches
