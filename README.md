@@ -139,3 +139,14 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
   - `State`
     - handler for `put` cannot drop writes
   - `Error`
+
+
+## Modularity
+
+- laws enable greater modularity
+  - reason/test in isolation
+  - apply systematically
+- express behaviour as equations
+- typically relate effects to “canonical” handlers
+- admit _useful_ variance in implementations
+- admit interactions with other effects via more laws
