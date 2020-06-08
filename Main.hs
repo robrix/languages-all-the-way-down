@@ -53,7 +53,7 @@ f =<< x (for pure function f and computation x)
 -- IO actions give us no guarantees about what they can do:
 
 innocuous :: IO ()
-innocuous = hPutStrLn stderr $ repeat '✨'
+innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 
 -- ioAction :: IO ()
 -- ioAction = E.throwTo fan glitter
