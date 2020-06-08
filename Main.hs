@@ -34,6 +34,10 @@ Aside:
 
 ($)   ::            (a ->   b) ->   a ->   b
 (=<<) :: Monad m => (a -> m b) -> m a -> m b
+
+f $ x   (for pure function f and value x)
+is analogous to
+f =<< x (for pure function f and computation x)
 -}
 
 
