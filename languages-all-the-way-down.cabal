@@ -43,7 +43,7 @@ test-suite languages-all-the-way-down
   type:        exitcode-stdio-1.0
   main-is:     Main.hs
   build-depends:
-      base          ^>= 4.13
+    , base          ^>= 4.13
     , fused-effects
     , mtl           ^>= 2.2
     , transformers  ^>= 0.5.6
