@@ -151,3 +151,12 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - typically relate effects to “canonical” handlers
 - admit _useful_ variance in implementations
 - admit interactions with other effects
+
+
+## Application
+
+- identify suitable portions of domain
+  - orthogonal concept/behaviour
+  - reasoning/testing in isolation
+  - multiple implementation strategies
+- phrase important concepts in domain using effects
