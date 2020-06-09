@@ -129,7 +129,7 @@ writeCacheIO things = do
 -- fused-effects defines interpreters using Algebra instances; handler functions select a specific type & thus its Algebra
 
 
--- $Laws
+-- Laws
 
 {-
 
