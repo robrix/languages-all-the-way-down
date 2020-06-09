@@ -141,6 +141,8 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
     - handler for `put` cannot drop writes
   - `Error`
 
+- NB: simplest expression of laws may not be obvious; start with desired properties
+
 
 ## Modularity
 
