@@ -101,36 +101,6 @@ writeCacheIO things = do
   where
   nThings = length things
 
--- how do we test this?
--- what if we want to run tests concurrently?
--- what if we want to time it?
--- what about if we want to configure where the cache gets written?
--- or how?
--- do we really want to complicate the business logic with details of logging?
--- how do we batch the writes to the file?
--- if this is in a library, how do we ensure nobody else writes to our file?
--- if we’re given an action in IO, what confidence do we have that it isn’t going to dump glitter into a fan?
-
--- pros/cons…
-
-
--- get :: MTL.MonadState   s      m => m s
--- get :: FE.Has (FE.State s) sig m => m s
--- put :: MTL.MonadState   s      m => s -> m ()
--- put :: FE.Has (FE.State s) sig m => s -> m ()
-
--- throwError :: MTL.MonadError   e      m => e -> m a
--- throwError :: FE.Has (FE.Error e) sig m => e -> m a
--- catchError :: MTL.MonadError   e      m => m a -> (e -> m a) -> m a
--- catchError :: FE.Has (FE.Error e) sig m => m a -> (e -> m a) -> m a
-
--- key features:
--- - abstraction; computations occur in some type abstracted over the implementation of the effects
--- - composition; we can seamlessly introduce and handle effects, lift operations into supporting contexts, etc.
-
-
--- fused-effects defines interpreters using Algebra instances; handler functions select a specific type & thus its Algebra
-
 
 -- State
 
