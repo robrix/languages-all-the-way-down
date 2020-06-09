@@ -129,4 +129,38 @@ writeCacheIO things = do
 -- fused-effects defines interpreters using Algebra instances; handler functions select a specific type & thus its Algebra
 
 
--- Effects, more formally
+-- $Laws
+
+{-
+
+get law:
+  runState a (get >>= k)  = runState a (k a)
+put law:
+  runState a (put b >> m) = runState b m
+
+might have expected a law relating get/put, directly stating the property we want to hold:
+  put a >> get = return a
+
+but this is derivable from the above. key: above laws relate operations to some handler with approximately the following type:
+  runState :: s -> m a -> n (s, a) -- abstract, and approximate; m determines both s and n
+
+we can think of this as meaning that the laws are parameterized by this handler, and so specific handlers would instantiate the type variables:
+  runState :: s -> StateC s n a -> n (s, a) -- instantiating m to fused-effects’ StateC, i.e. m ~ StateC s n
+  runState :: s -> StateC s Identity a -> Identity (s, a) -- instantiating n to Identity
+this handler is itself also subject to laws governing return and >>=:
+  runState s (return a) = return (s, a)
+  runState s (m >>= k) = runState s m >>= \ (s', a) -> runState s' (k a)
+this is essential for the following reasoning but is generally left implicit
+
+put law
+  runState a (put b >> m) = runState b m
+instantiate m with get (and a continuation k, to show our work):
+  runState a (put b >> get >>= k) = runState b (get >>= k)
+simplify rhs with get law:
+  runState a (put b >> get >>= k) = runState b (k b)
+instantiate k with return:
+  runState a (put b >> get >>= return) = runState b (return b)
+simplify lhs using monad law:
+  runState a (put b >> get) = runState b (return b)
+
+-}
