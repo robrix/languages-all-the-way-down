@@ -1,4 +1,6 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE GADTs          #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE RankNTypes     #-}
 module Main
 ( module Main
 )
@@ -9,6 +11,7 @@ import qualified Control.Exception          as E
 import           Control.Monad              (guard, (<=<))
 import           Data.Char                  (isUpper, readLitChar)
 import           Data.Foldable              (for_)
+import           Data.Kind                  (Type)
 import           Numeric                    (readDec, readSigned)
 import           System.IO                  (hPutStrLn, stderr)
 
@@ -20,7 +23,7 @@ import qualified Control.Monad.Trans.State  as T
 import qualified Control.Monad.Trans.Class  as MTL
 
 -- fused-effects
-import qualified Control.Algebra            as FE
+import           Control.Algebra
 import qualified Control.Effect.State       as FE
 
 main :: IO ()
@@ -127,6 +130,19 @@ writeCacheIO things = do
 
 
 -- fused-effects defines interpreters using Algebra instances; handler functions select a specific type & thus its Algebra
+
+
+-- State
+
+-- data State s (m :: Type -> Type) a where
+--   Get ::      State s m s
+--   Put :: s -> State s m ()
+
+-- get :: Has (State s) sig m => m s
+-- get = send Get
+
+-- put :: Has (State s) sig m => s -> m ()
+-- put s = send (Put s)
 
 
 -- Laws
