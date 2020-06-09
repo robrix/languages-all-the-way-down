@@ -77,6 +77,7 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - a handler gives implementations for each operation within a specific scope
 - `transformers` doesn’t qualify
 - `mtl` does
+- `fused-effects` does
 
 
 ## Abstraction
