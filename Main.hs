@@ -5,22 +5,23 @@ module Main
 where
 
 -- base
-import qualified Control.Exception as E
-import           Control.Monad (guard)
-import           Data.Char (isUpper, readLitChar)
-import           Data.Foldable (for_)
-import           System.IO (hPutStrLn, stderr)
+import qualified Control.Exception          as E
+import           Control.Monad              (guard, (<=<))
+import           Data.Char                  (isUpper, readLitChar)
+import           Data.Foldable              (for_)
+import           Numeric                    (readDec, readSigned)
+import           System.IO                  (hPutStrLn, stderr)
 
 -- transformers
 import qualified Control.Monad.Trans.Except as T
-import qualified Control.Monad.Trans.State as T
+import qualified Control.Monad.Trans.State  as T
 
 -- mtl
-import qualified Control.Monad.Trans.Class as MTL
+import qualified Control.Monad.Trans.Class  as MTL
 
 -- fused-effects
-import qualified Control.Algebra as FE
-import qualified Control.Effect.State as FE
+import qualified Control.Algebra            as FE
+import qualified Control.Effect.State       as FE
 
 main :: IO ()
 main = pure ()
@@ -35,6 +36,10 @@ match :: (a -> Bool) -> (a -> Maybe a)
 match f a = do
   guard (f a)
   return a
+
+
+parsePositiveDec :: String -> Maybe Int
+parsePositiveDec = match (>= 0) <=< parse (readSigned readDec)
 
 {-
 Contrast:
