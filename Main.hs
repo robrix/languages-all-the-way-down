@@ -13,6 +13,7 @@ import           Data.Char                  (isUpper, readLitChar)
 import           Data.Foldable              (for_)
 import           Data.Kind                  (Type)
 import           Data.List                  (sort)
+import           Data.Maybe                 (catMaybes)
 import           Data.Traversable           (for)
 import           Numeric                    (readDec, readSigned)
 import           System.Directory
@@ -123,7 +124,7 @@ writeCacheIO things = do
 
   infoIO $ "(writeCacheIO) ending write of " <> show nThings <> " things"
   where
-  nThings = length things
+  nThings = length $ catMaybes things
 
 readCacheIO :: Read a => IO [Maybe a]
 readCacheIO = do
