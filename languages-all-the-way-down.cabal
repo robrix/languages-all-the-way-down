@@ -44,6 +44,8 @@ test-suite languages-all-the-way-down
   main-is:     Main.hs
   build-depends:
     , base          ^>= 4.13
+    , directory
+    , filepath
     , fused-effects
     , mtl           ^>= 2.2
     , transformers  ^>= 0.5.6
