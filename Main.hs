@@ -8,11 +8,13 @@ where
 
 -- base
 import qualified Control.Exception          as E
-import           Control.Monad              (guard, (<=<))
+import           Control.Monad              (guard, unless, (<=<))
 import           Data.Char                  (isUpper, readLitChar)
 import           Data.Foldable              (for_)
 import           Data.Kind                  (Type)
 import           Numeric                    (readDec, readSigned)
+import           System.Directory
+import           System.FilePath
 import           System.IO                  (hPutStrLn, stderr)
 
 -- transformers
@@ -94,11 +96,17 @@ writeCacheIO :: Show a => [a] -> IO ()
 writeCacheIO things = do
   putStrLn $ "INFO: (writeCacheIO) starting write of " <> show nThings <> " things"
 
+  exists <- doesDirectoryExist cacheDir
+  unless exists $ do
+    putStrLn $ "WARN: (writeCacheIO) creating cache directory " <> cacheDir
+    createDirectory cacheDir
+
   for_ (zip [1..] things) $ \ (i, thing) ->
-    writeFile ("cache/" <> show i) (show thing)
+    writeFile (cacheDir </> show i) (show thing)
 
   putStrLn $ "INFO: (writeCacheIO) ending write of " <> show nThings <> " things"
   where
+  cacheDir = "cache"
   nThings = length things
 
 
