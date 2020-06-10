@@ -118,8 +118,10 @@ writeCacheIO things = do
 
   for_ (zip [1..] things) $ \ (i, thing) ->
     case thing of
-      Just value -> writeFile (cacheDir </> show i) (show value)
-        `E.catch` \ e -> errIO $ "(writeCacheIO) could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
+      Just value -> do
+        infoIO $ "(writeCacheIO) wriitng cache file " <> show i
+        writeFile (cacheDir </> show i) (show value)
+          `E.catch` \ e -> errIO $ "(writeCacheIO) could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
       Nothing    -> return ()
 
   infoIO $ "(writeCacheIO) ending write of " <> show nThings <> " things"
