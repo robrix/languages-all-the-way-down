@@ -158,9 +158,9 @@ logIO :: Level -> String -> IO ()
 logIO level message = hPutStrLn stderr $ level' <> ": " <> message
   where
   level' = case level of
-    Info -> "INFO"
+    Info    -> "INFO"
     Warning -> "WARN"
-    Error -> "ERROR"
+    Error   -> "ERROR"
 
 infoIO, warnIO, errIO :: String -> IO ()
 
