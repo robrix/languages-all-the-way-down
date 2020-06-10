@@ -130,7 +130,7 @@ readCacheIO = do
     let nThings = length entries
     infoIO $ "(readCacheIO) starting read of " <> show nThings <> " things"
     results <- for entries $ \ entry -> do
-      str <- readFile entry
+      str <- readFile $ cacheDir </> entry
       case readEither str of
         Left err -> do
           errIO $ "(readCacheIO) could not read cache file " <> entry <> ": " <> err
