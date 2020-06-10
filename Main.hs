@@ -92,12 +92,12 @@ innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 
 writeCacheIO :: Show a => [a] -> IO ()
 writeCacheIO things = do
-  putStrLn $ "starting write of " <> show nThings <> " things"
+  putStrLn $ "INFO: starting write of " <> show nThings <> " things"
 
   for_ things $ \ thing ->
     appendFile "cache" (show thing)
 
-  putStrLn $ "ending write of " <> show nThings <> " things"
+  putStrLn $ "INFO: ending write of " <> show nThings <> " things"
   where
   nThings = length things
 
