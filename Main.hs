@@ -127,9 +127,10 @@ readCacheIO = do
   exists <- doesDirectoryExist cacheDir
   if exists then do
     entries <- listDirectory cacheDir
-    let nThings = length entries
+    let files = filter isCacheFile entries
+        nThings = length files
     infoIO $ "(readCacheIO) starting read of " <> show nThings <> " things"
-    results <- for entries $ \ entry -> do
+    results <- for files $ \ entry -> do
       str <- readFile $ cacheDir </> entry
       case readEither str of
         Left err -> do
@@ -141,6 +142,11 @@ readCacheIO = do
   else do
     warnIO $ "(readCacheIO) cache directory " <> cacheDir <> " does not exist"
     return []
+  where
+  isCacheFile path
+    | c:_ <- path
+    , c /= '.'  = True
+    | otherwise = False
 
 cacheDir :: FilePath
 cacheDir = "cache"
