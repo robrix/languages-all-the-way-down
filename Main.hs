@@ -156,6 +156,7 @@ data Level = Info | Warning | Error
 
 data Logging (m :: Type -> Type) a where
   Log :: Level -> String -> Logging m ()
+  Label :: String -> m a -> Logging m a
 
 info :: Has Logging sig m => String -> m ()
 info msg = send $ Log Info msg
@@ -165,3 +166,7 @@ warn msg = send $ Log Warning msg
 
 err :: Has Logging sig m => String -> m ()
 err msg = send $ Log Error msg
+
+
+label :: Has Logging sig m => String -> m a -> m a
+label name m = send $ Label name m
