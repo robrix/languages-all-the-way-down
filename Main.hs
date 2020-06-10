@@ -94,8 +94,8 @@ writeCacheIO :: Show a => [a] -> IO ()
 writeCacheIO things = do
   putStrLn $ "INFO: starting write of " <> show nThings <> " things"
 
-  for_ things $ \ thing ->
-    appendFile "cache" (show thing)
+  for_ (zip [1..] things) $ \ (i, thing) ->
+    writeFile ("cache/" <> show i) (show thing)
 
   putStrLn $ "INFO: ending write of " <> show nThings <> " things"
   where
