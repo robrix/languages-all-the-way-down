@@ -150,3 +150,18 @@ simplify lhs using monad law:
   runState a (put b >> get) = runState b (return b)
 
 -}
+
+
+data Level = Info | Warning | Error
+
+data Logging (m :: Type -> Type) a where
+  Log :: Level -> String -> Logging m ()
+
+info :: Has Logging sig m => String -> m ()
+info msg = send $ Log Info msg
+
+warn :: Has Logging sig m => String -> m ()
+warn msg = send $ Log Warning msg
+
+err :: Has Logging sig m => String -> m ()
+err msg = send $ Log Error msg
