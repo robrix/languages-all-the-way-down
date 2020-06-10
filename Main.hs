@@ -100,13 +100,13 @@ traverseCachedIO :: (Read b, Show b) => (a -> IO b) -> [a] -> IO [b]
 traverseCachedIO process input = do
   cache <- readCacheIO
   results <- for (zip input (cache <> repeat Nothing)) $ \ (elem, entry) -> case entry of
-    Just cached -> return cached
-    Nothing     -> process elem
-  writeCacheIO results
-  return results
+    Just cached -> return $ Left cached
+    Nothing     -> Right <$> process elem
+  writeCacheIO $ map (either (const Nothing) Just) results
+  return $ map (either id id) results
 
 
-writeCacheIO :: Show a => [a] -> IO ()
+writeCacheIO :: Show a => [Maybe a] -> IO ()
 writeCacheIO things = do
   infoIO $ "(writeCacheIO) starting write of " <> show nThings <> " things"
 
@@ -116,8 +116,10 @@ writeCacheIO things = do
     createDirectory cacheDir
 
   for_ (zip [1..] things) $ \ (i, thing) ->
-    writeFile (cacheDir </> show i) (show thing)
-      `E.catch` \ e -> errIO $ "(writeCacheIO) could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
+    case thing of
+      Just value -> writeFile (cacheDir </> show i) (show value)
+        `E.catch` \ e -> errIO $ "(writeCacheIO) could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
+      Nothing    -> return ()
 
   infoIO $ "(writeCacheIO) ending write of " <> show nThings <> " things"
   where
