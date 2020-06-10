@@ -153,6 +153,7 @@ simplify lhs using monad law:
 
 
 data Level = Info | Warning | Error
+  deriving (Eq, Ord, Show)
 
 data Logging (m :: Type -> Type) a where
   Log :: Level -> String -> Logging m ()
@@ -170,3 +171,16 @@ err msg = send $ Log Error msg
 
 label :: Has Logging sig m => String -> m a -> m a
 label name m = send $ Label name m
+
+-- laws:
+-- - atomicity
+-- - thread-local ordering
+-- - labelling
+
+
+data Message = Message
+  { context  :: [String]
+  , level   :: Level
+  , message :: String
+  }
+  deriving (Eq, Show)
