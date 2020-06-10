@@ -98,7 +98,7 @@ innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 traverseCachedIO :: (Read b, Show b) => (a -> IO b) -> [a] -> IO [b]
 traverseCachedIO process input = do
   cache <- readCacheIO
-  results <- for (zip input cache) $ \ (elem, entry) -> case entry of
+  results <- for (zip input (cache <> repeat Nothing)) $ \ (elem, entry) -> case entry of
     Just cached -> return cached
     Nothing     -> process elem
   writeCacheIO results
