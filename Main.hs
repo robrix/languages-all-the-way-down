@@ -103,6 +103,7 @@ writeCacheIO things = do
 
   for_ (zip [1..] things) $ \ (i, thing) ->
     writeFile (cacheDir </> show i) (show thing)
+      `E.catch` \ e -> putStrLn $ "ERROR: could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
 
   putStrLn $ "INFO: (writeCacheIO) ending write of " <> show nThings <> " things"
   where
