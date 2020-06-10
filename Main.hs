@@ -12,10 +12,12 @@ import           Control.Monad              (guard, unless, (<=<))
 import           Data.Char                  (isUpper, readLitChar)
 import           Data.Foldable              (for_)
 import           Data.Kind                  (Type)
+import           Data.Traversable           (for)
 import           Numeric                    (readDec, readSigned)
 import           System.Directory
 import           System.FilePath
 import           System.IO                  (hPutStrLn, stderr)
+import           Text.Read                  (readEither)
 
 -- transformers
 import qualified Control.Monad.Trans.Except as T
@@ -108,6 +110,26 @@ writeCacheIO things = do
   putStrLn $ "INFO: (writeCacheIO) ending write of " <> show nThings <> " things"
   where
   nThings = length things
+
+readCacheIO :: Read a => IO [Maybe a]
+readCacheIO = do
+  exists <- doesDirectoryExist cacheDir
+  if exists then do
+    entries <- listDirectory cacheDir
+    let nThings = length entries
+    putStrLn $ "INFO: (readCacheIO) starting read of " <> show nThings <> " things"
+    results <- for entries $ \ entry -> do
+      str <- readFile entry
+      case readEither str of
+        Left err -> do
+          putStrLn $ "ERROR: (readCacheIO) could not read cache file " <> entry <> ": " <> err
+          return Nothing
+        Right a -> return $ Just a
+    putStrLn $ "INFO: (readCacheIO) ending read of " <> show nThings <> " things"
+    return results
+  else do
+    putStrLn $ "WARN: (readCacheIO) cache directory " <> cacheDir <> " does not exist"
+    return []
 
 cacheDir :: FilePath
 cacheDir = "cache"
