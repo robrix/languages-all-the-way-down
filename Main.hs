@@ -107,8 +107,12 @@ writeCacheIO things = do
 
   putStrLn $ "INFO: (writeCacheIO) ending write of " <> show nThings <> " things"
   where
-  cacheDir = "cache"
   nThings = length things
+
+cacheDir :: FilePath
+cacheDir = "cache"
+
+
 
 
 -- State
