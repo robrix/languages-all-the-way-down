@@ -206,11 +206,14 @@ data Logging (m :: Type -> Type) a where
   Log :: Level -> String -> Logging m ()
   Label :: String -> m a -> Logging m a
 
+log' :: Has Logging sig m => Level -> String -> m ()
+log' level msg = send $ Log level msg
+
 info, warn, err :: Has Logging sig m => String -> m ()
 
-info msg = send $ Log Info    msg
-warn msg = send $ Log Warning msg
-err  msg = send $ Log Error   msg
+info = log' Info
+warn = log' Warning
+err  = log' Error
 
 
 label :: Has Logging sig m => String -> m a -> m a
