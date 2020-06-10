@@ -94,6 +94,17 @@ innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 
 -- Also, none of these give us any means to inspect or alter their behaviour. E.g. logging, statting, batching, concurrency…
 
+
+traverseCachedIO :: (Read b, Show b) => (a -> IO b) -> [a] -> IO [b]
+traverseCachedIO process input = do
+  cache <- readCacheIO
+  results <- for (zip input cache) $ \ (elem, entry) -> case entry of
+    Just cached -> return cached
+    Nothing     -> process elem
+  writeCacheIO results
+  return results
+
+
 writeCacheIO :: Show a => [a] -> IO ()
 writeCacheIO things = do
   infoIO $ "(writeCacheIO) starting write of " <> show nThings <> " things"
