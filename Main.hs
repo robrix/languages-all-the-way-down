@@ -96,18 +96,18 @@ innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 
 writeCacheIO :: Show a => [a] -> IO ()
 writeCacheIO things = do
-  putStrLn $ "INFO: (writeCacheIO) starting write of " <> show nThings <> " things"
+  infoIO $ "(writeCacheIO) starting write of " <> show nThings <> " things"
 
   exists <- doesDirectoryExist cacheDir
   unless exists $ do
-    putStrLn $ "WARN: (writeCacheIO) creating cache directory " <> cacheDir
+    warnIO $ "(writeCacheIO) creating cache directory " <> cacheDir
     createDirectory cacheDir
 
   for_ (zip [1..] things) $ \ (i, thing) ->
     writeFile (cacheDir </> show i) (show thing)
-      `E.catch` \ e -> putStrLn $ "ERROR: (writeCacheIO) could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
+      `E.catch` \ e -> errIO $ "(writeCacheIO) could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
 
-  putStrLn $ "INFO: (writeCacheIO) ending write of " <> show nThings <> " things"
+  infoIO $ "(writeCacheIO) ending write of " <> show nThings <> " things"
   where
   nThings = length things
 
@@ -117,25 +117,25 @@ readCacheIO = do
   if exists then do
     entries <- listDirectory cacheDir
     let nThings = length entries
-    putStrLn $ "INFO: (readCacheIO) starting read of " <> show nThings <> " things"
+    infoIO $ "(readCacheIO) starting read of " <> show nThings <> " things"
     results <- for entries $ \ entry -> do
       str <- readFile entry
       case readEither str of
         Left err -> do
-          putStrLn $ "ERROR: (readCacheIO) could not read cache file " <> entry <> ": " <> err
+          errIO $ "(readCacheIO) could not read cache file " <> entry <> ": " <> err
           return Nothing
         Right a -> return $ Just a
-    putStrLn $ "INFO: (readCacheIO) ending read of " <> show nThings <> " things"
+    infoIO $ "(readCacheIO) ending read of " <> show nThings <> " things"
     return results
   else do
-    putStrLn $ "WARN: (readCacheIO) cache directory " <> cacheDir <> " does not exist"
+    warnIO $ "(readCacheIO) cache directory " <> cacheDir <> " does not exist"
     return []
 
 cacheDir :: FilePath
 cacheDir = "cache"
 
 logIO :: Level -> String -> IO ()
-logIO level message = putStrLn $ level' <> ": " <> message
+logIO level message = hPutStrLn stderr $ level' <> ": " <> message
   where
   level' = case level of
     Info -> "INFO"
