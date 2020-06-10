@@ -29,7 +29,7 @@ import           Control.Algebra
 import qualified Control.Effect.State       as FE
 
 main :: IO ()
-main = pure ()
+main = return ()
 
 
 parse :: ReadS a -> String -> Maybe a
