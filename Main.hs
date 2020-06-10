@@ -134,7 +134,19 @@ readCacheIO = do
 cacheDir :: FilePath
 cacheDir = "cache"
 
+logIO :: Level -> String -> IO ()
+logIO level message = putStrLn $ level' <> ": " <> message
+  where
+  level' = case level of
+    Info -> "INFO"
+    Warning -> "WARN"
+    Error -> "ERROR"
 
+infoIO, warnIO, errIO :: String -> IO ()
+
+infoIO = logIO Info
+warnIO = logIO Warning
+errIO  = logIO Error
 
 
 -- State
