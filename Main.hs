@@ -12,6 +12,7 @@ import           Control.Monad              (guard, unless, (<=<))
 import           Data.Char                  (isUpper, readLitChar)
 import           Data.Foldable              (for_)
 import           Data.Kind                  (Type)
+import           Data.List                  (sort)
 import           Data.Traversable           (for)
 import           Numeric                    (readDec, readSigned)
 import           System.Directory
@@ -127,7 +128,7 @@ readCacheIO = do
   exists <- doesDirectoryExist cacheDir
   if exists then do
     entries <- listDirectory cacheDir
-    let files = filter isCacheFile entries
+    let files = sort $ filter isCacheFile entries
         nThings = length files
     infoIO $ "(readCacheIO) starting read of " <> show nThings <> " things"
     results <- for files $ \ entry -> do
