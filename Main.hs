@@ -179,7 +179,7 @@ label name m = send $ Label name m
 
 
 data Message = Message
-  { context  :: [String]
+  { context :: [String]
   , level   :: Level
   , message :: String
   }
