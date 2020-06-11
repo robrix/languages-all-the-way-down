@@ -7,31 +7,28 @@ module Main
 where
 
 -- base
-import qualified Control.Exception          as E
-import           Control.Monad              (guard, unless, (<=<))
-import           Data.Char                  (isUpper, readLitChar)
-import           Data.Foldable              (for_)
-import           Data.Kind                  (Type)
-import           Data.List                  (sort)
-import           Data.Maybe                 (catMaybes)
-import           Data.Traversable           (for)
-import           Numeric                    (readDec, readSigned)
+import qualified Control.Exception            as E
+import           Control.Monad                (guard, unless, (<=<))
+import           Data.Foldable                (for_)
+import           Data.Kind                    (Type)
+import           Data.List                    (sort)
+import           Data.Maybe                   (catMaybes)
+import           Data.Traversable             (for)
+import           Numeric                      (readDec, readSigned)
 import           System.Directory
 import           System.FilePath
-import           System.IO                  (hPutStrLn, stderr)
-import           Text.Read                  (readEither)
+import           System.IO                    (hPutStrLn, stderr)
+import           Text.Read                    (readEither)
 
 -- transformers
 import           Control.Monad.Trans.Class
-import qualified Control.Monad.Trans.Except as T
-import qualified Control.Monad.Trans.State  as T
-
--- mtl
-import qualified Control.Monad.Trans.Class  as MTL
+import qualified Control.Monad.Trans.Except   as T
+import qualified Control.Monad.Trans.State    as T
 
 -- fused-effects
 import           Control.Algebra
-import qualified Control.Effect.State       as FE
+import qualified Control.Carrier.Error.Either as FE
+import qualified Control.Carrier.State.Strict as FE
 
 main :: IO ()
 main = return ()
@@ -42,6 +39,7 @@ parse parser input = case parser input of
   [(a, "")] -> Just a
   _         -> Nothing
 
+-- FIXME: rewrite
 match :: (a -> Bool) -> (a -> Maybe a)
 match f a = do
   guard (f a)
@@ -85,9 +83,6 @@ f =<< x (for pure function f and computation x)
 innocuous :: IO ()
 innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 
--- ioAction :: IO ()
--- ioAction = E.throwTo fan glitter
-
 
 -- concrete monads don’t compose; given monads m and n, m . n is not in general a monad.
 
@@ -105,6 +100,21 @@ exceptOnState = do
   T.throwE (show v)
 
 -- can’t use >> to combine these
+
+
+-- contrast:
+errorAndState
+  :: ( Has (FE.Error String) sig m
+     , Has (FE.State Int) sig m
+     )
+  => m ()
+errorAndState = do
+  v <- FE.get
+  FE.throwError (show (v :: Int))
+
+
+runStateOnError = FE.runError . FE.runState 0
+runErrorOnState = FE.runState 0 . FE.runError
 
 
 -- Example: logging
@@ -131,7 +141,7 @@ writeCacheIO things = do
   for_ (zip [1..] things) $ \ (i, thing) ->
     case thing of
       Just value -> do
-        infoIO $ "(writeCacheIO) wriitng cache file " <> show i
+        infoIO $ "(writeCacheIO) wriitng cache file " <> show (i :: Int)
         writeFile (cacheDir </> show i) (show value)
           `E.catch` \ e -> errIO $ "(writeCacheIO) could not write cache file " <> show i <> ": " <> E.displayException (e :: IOError)
       Nothing    -> return ()
@@ -254,7 +264,7 @@ err  = log' Error
 label :: Has Logging sig m => String -> m a -> m a
 label name m = send $ Label name m
 
--- laws:
+-- desired properties:
 -- - atomicity
 -- - thread-local ordering
 -- - labelling
