@@ -178,7 +178,7 @@ cacheDir :: FilePath
 cacheDir = "cache"
 
 logIO :: Level -> String -> IO ()
-logIO level message = hPutStrLn stderr $ displayLevel <> ": " <> message
+logIO level message = hPutStrLn stderr $ displayLevel level <> ": " <> message
 
 infoIO, warnIO, errIO :: String -> IO ()
 
