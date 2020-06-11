@@ -1,8 +1,6 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE KindSignatures #-}
-module Control.Effect.Logging
-( module Control.Effect.Logging
-) where
+module Control.Effect.Logging where
 
 import Control.Algebra
 import Data.Kind (Type)

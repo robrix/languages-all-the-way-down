@@ -1,12 +1,9 @@
 {-# LANGUAGE GADTs          #-}
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE RankNTypes     #-}
-module Main
-( module Main
-)
-where
+module Main where
 
-import           Control.Effect.Logging
+import           Control.Carrier.Logging.Identity as Identity
 
 -- base
 import qualified Control.Exception            as E

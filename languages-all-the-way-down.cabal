@@ -23,6 +23,7 @@ common common
     -Wno-all-missed-specialisations
     -Wno-implicit-prelude
     -Wno-missed-specialisations
+    -Wno-missing-export-lists
     -Wno-missing-import-lists
     -Wno-missing-local-signatures
     -Wno-monomorphism-restriction
@@ -43,6 +44,7 @@ test-suite languages-all-the-way-down
   type:        exitcode-stdio-1.0
   main-is:     Main.hs
   other-modules:
+    Control.Carrier.Logging.Identity
     Control.Effect.Logging
   build-depends:
     , async         ^>= 2.2
