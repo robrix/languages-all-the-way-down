@@ -78,6 +78,7 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - `transformers` doesn’t qualify
 - `mtl` does
 - `fused-effects` does
+- monad transformers aren’t the only model for effect handlers
 
 
 ## Abstraction
