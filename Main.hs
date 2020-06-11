@@ -6,11 +6,12 @@ module Main
 )
 where
 
+import           Control.Effect.Logging
+
 -- base
 import qualified Control.Exception            as E
 import           Control.Monad                (guard, unless, (<=<))
 import           Data.Foldable                (for_)
-import           Data.Kind                    (Type)
 import           Data.List                    (sort)
 import           Data.Maybe                   (catMaybes)
 import           Data.Traversable             (for)
@@ -244,25 +245,6 @@ simplify lhs using monad law:
 -}
 
 
-data Level = Info | Warning | Error
-  deriving (Eq, Ord, Show)
-
-data Logging (m :: Type -> Type) a where
-  Log :: Level -> String -> Logging m ()
-  Label :: String -> m a -> Logging m a
-
-log' :: Has Logging sig m => Level -> String -> m ()
-log' level msg = send $ Log level msg
-
-info, warn, err :: Has Logging sig m => String -> m ()
-
-info = log' Info
-warn = log' Warning
-err  = log' Error
-
-
-label :: Has Logging sig m => String -> m a -> m a
-label name m = send $ Label name m
 
 -- desired properties:
 -- - atomicity

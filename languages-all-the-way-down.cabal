@@ -42,6 +42,8 @@ test-suite languages-all-the-way-down
   import:      common
   type:        exitcode-stdio-1.0
   main-is:     Main.hs
+  other-modules:
+    Control.Effect.Logging
   build-depends:
     , async         ^>= 2.2
     , base          ^>= 4.13
