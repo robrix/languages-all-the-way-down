@@ -1,4 +1,4 @@
-{-# LANGUAGE GADTs #-}
+{-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE KindSignatures #-}
 module Control.Effect.Logging where
 
@@ -8,12 +8,16 @@ import Data.Kind (Type)
 data Level = Info | Warning | Error
   deriving (Eq, Ord, Show)
 
-data Logging (m :: Type -> Type) a where
-  Log :: Level -> String -> Logging m ()
-  Label :: String -> m a -> Logging m a
+data Logging (m :: Type -> Type) k
+  = Log Level String (m k)
+  | forall a . Label String (m a) (a -> m k)
+
+instance HFunctor Logging where
+  hmap f (Log lvl msg  k) = Log lvl msg (f k)
+  hmap f (Label name m k) = Label name (f m) (f . k)
 
 log' :: Has Logging sig m => Level -> String -> m ()
-log' level msg = send $ Log level msg
+log' level msg = send $ Log level msg (pure ())
 
 info, warn, err :: Has Logging sig m => String -> m ()
 
@@ -23,4 +27,4 @@ err  = log' Error
 
 
 label :: Has Logging sig m => String -> m a -> m a
-label name m = send $ Label name m
+label name m = send $ Label name m pure
