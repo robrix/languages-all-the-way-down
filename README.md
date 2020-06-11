@@ -2,6 +2,10 @@
 
 This document is the outline for my ZuriHac 2020 talk _Languages All the Way Down_.
 
+TODO:
+- acknowledge we already write DSLs
+- perspective on DSLs/interpreters; plan of action
+
 
 ## Introduction
 
@@ -14,7 +18,18 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
   - will define algebraic effects & effect handlers later
 
 - effects & handlers are useful for pragmatic software engineering
+  - TODO: discuss *why*, briefly
+
+  - identify suitable portions of domain
+    - orthogonal concept/behaviour
+    - reasoning/testing in isolation
+    - multiple implementation strategies
+  - phrase important concepts in domain using effects
+
 - effects & handlers allow us to view application architecture & design through the lens of language design
+  - syntax/semantics ~ interface/implementation
+  - gives modularity at appropriate boundaries
+  - analysis/instrumentation
 
 
 ## Haskell <3
@@ -157,10 +172,15 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - admit interactions with other effects
 
 
-## Application
+## Conclusion
 
-- identify suitable portions of domain
-  - orthogonal concept/behaviour
-  - reasoning/testing in isolation
-  - multiple implementation strategies
-- phrase important concepts in domain using effects
+- recap
+  - pragmatic
+  - perspective
+
+- future work/call outs to possibilities we’ve explored?
+
+- call to action:
+  - simple example/homework
+
+- thanks/acknowledgements
