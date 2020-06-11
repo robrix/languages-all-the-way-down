@@ -22,6 +22,7 @@ import           System.IO                  (hPutStrLn, stderr)
 import           Text.Read                  (readEither)
 
 -- transformers
+import           Control.Monad.Trans.Class
 import qualified Control.Monad.Trans.Except as T
 import qualified Control.Monad.Trans.State  as T
 
@@ -93,9 +94,20 @@ innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 
 -- monad transformers are brittle & static
 
+stateOnExcept :: Monad m => T.StateT Int (T.ExceptT String m) ()
+stateOnExcept = do
+  v <- T.get
+  lift $ T.throwE (show v)
 
--- Also, none of these give us any means to inspect or alter their behaviour. E.g. logging, statting, batching, concurrency…
+exceptOnState :: Monad m => T.ExceptT String (T.StateT Int m) ()
+exceptOnState = do
+  v <- lift T.get
+  T.throwE (show v)
 
+-- can’t use >> to combine these
+
+
+-- Example: logging
 
 traverseCachedIO :: (Read b, Show b) => (a -> IO b) -> [a] -> IO [b]
 traverseCachedIO process input = do
