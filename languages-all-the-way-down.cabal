@@ -45,6 +45,7 @@ test-suite languages-all-the-way-down
   main-is:     Main.hs
   other-modules:
     Control.Carrier.Logging.Identity
+    Control.Carrier.Logging.IO
     Control.Effect.Logging
   build-depends:
     , async         ^>= 2.2
