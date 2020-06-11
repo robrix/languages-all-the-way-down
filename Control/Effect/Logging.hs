@@ -8,6 +8,13 @@ import Data.Kind (Type)
 data Level = Info | Warning | Error
   deriving (Eq, Ord, Show)
 
+displayLevel :: Level -> String
+displayLevel level = case level of
+  Info    -> "INFO"
+  Warning -> "WARN"
+  Error   -> "ERROR"
+
+
 data Logging (m :: Type -> Type) k
   = Log Level String (m k)
   | forall a . Label String (m a) (a -> m k)
