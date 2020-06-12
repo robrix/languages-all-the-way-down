@@ -31,6 +31,7 @@ main = return ()
 
 -- outline & code:
 -- https://github.com/robrix/languages-all-the-way-down
+-- https://github.com/robrix/starlight
 
 -- me:
 -- https://twitter.com/rob_rix
