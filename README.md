@@ -59,6 +59,10 @@ cabal repl --enable-tests
   - state
 - Kleisli composition
 
+    match (>= 0) <=< parse (readSigned readDec) $ "10"
+    match (>= 0) <=< parse (readSigned readDec) $ "-10"
+    match (>= 0) <=< parse (readSigned readDec) $ "cheese"
+
 
 ## Effects, informally
 
