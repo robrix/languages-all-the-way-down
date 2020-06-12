@@ -198,7 +198,7 @@ cabal repl --enable-tests
 - admit _useful_ variance in implementations
 - admit interactions with other effects
 
-- example:
+- examples:
   - `State`:
     - `StateT`
     - `ST`
@@ -210,6 +210,15 @@ cabal repl --enable-tests
     - write to database?
     - write to network?
     - update interface à la shadow DOM?
+
+  - `Logging`
+    - `Identity` - drop logs altogether
+    - `IO` - write logs to console
+    - `Tree` - collect logs into single high-cardinality event e.g. for observability
+
+    - allows us to test actions w/o logging to console/network
+    - allows us to test logging behaviour
+    - allows us to systematize logging behaviour
 
 
 ## Indications
