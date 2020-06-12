@@ -86,6 +86,7 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
   - polymorphism
     - cf typeclasses; dependency injection; inversion of control
 
+
 ## Effects, more formally
 
 - an effect defines a set of operations as an interface
