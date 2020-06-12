@@ -1,6 +1,3 @@
-{-# LANGUAGE GADTs          #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE RankNTypes     #-}
 module Main where
 
 import           Control.Carrier.Logging.Identity as Identity
