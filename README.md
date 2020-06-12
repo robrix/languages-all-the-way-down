@@ -188,17 +188,25 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
   - pragmatic
   - perspective
 
-- future work/call outs to possibilities we’ve explored?
+- other applications & future work:
+  - database
+  - filesystem
+  - network
+  - time
+  - profiling
   - debugging tools
   - instrumentation
   - analysis
   - repl
+
   - specific:
     - labelling is useful for more than just logging
     - logging & profiling are both instances of tracing
 
 - homework:
   - how could we express the laws for logging s.t. we could define property tests for them?
+    - should messages/laws involve time?
+    - if so, what’s a useful way of modelling time so we can parameterize it?
   - define a Teletype effect
     - what laws should it have, if any?
     - what kind of implementations could you have?
