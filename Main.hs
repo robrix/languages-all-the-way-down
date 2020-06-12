@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric #-}
 module Main where
 
 import           Control.Carrier.Logging.Identity as Identity
@@ -5,6 +6,7 @@ import           Control.Carrier.Logging.Identity as Identity
 -- base
 import           Control.Monad                    ((<=<))
 import           Data.Functor.Identity
+import           GHC.Generics (Generic1)
 import           System.IO                        (hPutStr, hPutStrLn, stderr)
 
 -- transformers
@@ -152,3 +154,15 @@ catchError law:
   runError (throwError e `catchError` f) = runError (f e)
 
 -}
+
+
+-- Glitter
+
+newtype Glitter m k = Glitter (m k)
+  deriving (Generic1)
+
+instance HFunctor Glitter
+instance Effect   Glitter
+
+glitter :: Has Glitter sig m => m ()
+glitter = send $ Glitter (pure ())
