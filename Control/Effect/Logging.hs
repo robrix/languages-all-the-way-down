@@ -29,6 +29,10 @@ instance HFunctor Logging where
   hmap f (Log lvl msg  k) = Log lvl msg (f k)
   hmap f (Label name m k) = Label name (f m) (f . k)
 
+instance Effect Logging where
+  thread ctx hdl (Log lvl msg  k) = Log lvl msg (hdl (k <$ ctx))
+  thread ctx hdl (Label name m k) = Label name (hdl (m <$ ctx)) (hdl . fmap k)
+
 log' :: Has Logging sig m => Level -> String -> m ()
 log' level msg = send $ Log level msg (pure ())
 
