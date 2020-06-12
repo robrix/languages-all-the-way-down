@@ -2,10 +2,6 @@
 
 This document is the outline for my ZuriHac 2020 talk _Languages All the Way Down_.
 
-TODO:
-- acknowledge we already write DSLs
-- perspective on DSLs/interpreters; plan of action
-
 
 ## Introduction
 
@@ -18,18 +14,23 @@ TODO:
   - will define algebraic effects & effect handlers later
 
 - effects & handlers are useful for pragmatic software engineering
-  - TODO: discuss *why*, briefly
+  - abstraction
+  - modularity
+  - systematization
 
-  - identify suitable portions of domain
-    - orthogonal concept/behaviour
-    - reasoning/testing in isolation
-    - multiple implementation strategies
-  - phrase important concepts in domain using effects
+  - recipe:
+    - select effectful operations
+    - define laws
+    - sometimes: write actions against the interface
+    - define handlers
+    - refine guided by use
 
 - effects & handlers allow us to view application architecture & design through the lens of language design
   - syntax/semantics ~ interface/implementation
   - gives modularity at appropriate boundaries
+  - compiler approaches in library
   - analysis/instrumentation
+  - most importantly, perspective
 
 
 ## Haskell <3
@@ -85,15 +86,21 @@ TODO:
   - polymorphism
     - cf typeclasses; dependency injection; inversion of control
 
-
 ## Effects, more formally
 
 - an effect defines a set of operations as an interface
 - a handler gives implementations for each operation within a specific scope
 - `transformers` doesn’t qualify
-- `mtl` does
-- `fused-effects` does
-- monad transformers aren’t the only model for effect handlers
+- `mtl`, `fused-effects`, `eff`, `polysemy`, etc. do
+
+- NB: monad transformers aren’t the only model for effect handlers
+
+- demo:
+
+    FE.runError @String . FE.runState @Int 0 $ errorAndState
+    FE.runState @Int 0 . FE.runError @String $ errorAndState
+
+    FE.run . FE.runError @String $ FE.get @Int
 
 
 ## Abstraction
@@ -125,12 +132,15 @@ TODO:
 - but Rails DSLs can still be pretty big
 - aside: Chomsky/universal grammar/“merge” operator; language ~ recursive combination
 
+- symbols provided by effect system (`>>=` & `return`) & constrained by types
+
 - effects can be factored arbitrarily small
   - `Error` ~ the language of catchable failures with an error
   - `Reader` ~ the language of a single locally-configurable parameter
   - `State` ~ the language of a single mutable variable
   - aside: “the” rather than “a” is notional; might be other expressions of same concept
 
+- we may think in terms of DSLs already
 
 ## Costs of abstraction
 
@@ -179,8 +189,20 @@ TODO:
   - perspective
 
 - future work/call outs to possibilities we’ve explored?
+  - debugging tools
+  - instrumentation
+  - analysis
+  - repl
+  - specific:
+    - labelling is useful for more than just logging
+    - logging & profiling are both instances of tracing
 
-- call to action:
-  - simple example/homework
+- homework:
+  - how could we express the laws for logging s.t. we could define property tests for them?
+  - define a Teletype effect
+    - what laws should it have, if any?
+    - what kind of implementations could you have?
 
 - thanks/acknowledgements
+  - my team, esp. Tim Clem, Ayman Nadeem, Rebecca Valentine, & Patrick Thomson
+  - research community, esp. Nicholas Wu & Tom Schrijvers, and also Paul Hudak for “DSLs are the ultimate abstraction”

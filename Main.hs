@@ -6,27 +6,20 @@ module Main where
 import           Control.Carrier.Logging.Identity as Identity
 
 -- base
-import qualified Control.Exception            as E
-import           Control.Monad                (guard, unless, (<=<))
-import           Data.Foldable                (for_)
-import           Data.List                    (sort)
-import           Data.Maybe                   (catMaybes)
-import           Data.Traversable             (for)
-import           Numeric                      (readDec, readSigned)
-import           System.Directory
-import           System.FilePath
-import           System.IO                    (hPutStrLn, stderr)
-import           Text.Read                    (readEither)
+import           Control.Monad                    ((<=<))
+import           Data.Functor.Identity
+import           Numeric                          (readDec, readSigned)
+import           System.IO                        (hPutStrLn, stderr)
 
 -- transformers
 import           Control.Monad.Trans.Class
-import qualified Control.Monad.Trans.Except   as T
-import qualified Control.Monad.Trans.State    as T
+import qualified Control.Monad.Trans.Except       as T
+import qualified Control.Monad.Trans.State        as T
 
 -- fused-effects
 import           Control.Algebra
-import qualified Control.Carrier.Error.Either as FE
-import qualified Control.Carrier.State.Strict as FE
+import qualified Control.Carrier.Error.Either     as FE
+import qualified Control.Carrier.State.Strict     as FE
 
 main :: IO ()
 main = return ()
@@ -39,9 +32,9 @@ parse parser input = case parser input of
 
 -- FIXME: rewrite
 match :: (a -> Bool) -> (a -> Maybe a)
-match f a = do
-  guard (f a)
-  return a
+match f a
+  | f a       = Just a
+  | otherwise = Nothing
 
 
 parsePositiveDec :: String -> Maybe Int
@@ -68,31 +61,20 @@ f =<< x (for pure function f and computation x)
 -}
 
 
--- Effects ~= “side effects”; “special” control flow alongside the normal behaviours
-
--- pure function:                 a ->   b
--- effectful function: Monad m => a -> m b
-
--- pure functions are analogous to a -> Identity b, i.e. “effectful” functions with no extra behaviour provided by the resulting context
-
-
 -- IO actions give us no guarantees about what they can do:
 
 innocuous :: IO ()
 innocuous = hPutStrLn stderr $ replicate 10000 '✨'
 
 
--- concrete monads don’t compose; given monads m and n, m . n is not in general a monad.
-
-
 -- monad transformers are brittle & static
 
-stateOnExcept :: Monad m => T.StateT Int (T.ExceptT String m) ()
+stateOnExcept :: T.StateT Int (T.ExceptT String Identity) ()
 stateOnExcept = do
   v <- T.get
   lift $ T.throwE (show v)
 
-exceptOnState :: Monad m => T.ExceptT String (T.StateT Int m) ()
+exceptOnState :: T.ExceptT String (T.StateT Int Identity) ()
 exceptOnState = do
   v <- lift T.get
   T.throwE (show v)
@@ -111,10 +93,6 @@ errorAndState = do
   FE.throwError (show (v :: Int))
 
 
-runStateOnError = FE.runError . FE.runState 0
-runErrorOnState = FE.runState 0 . FE.runError
-
-
 -- Example: logging
 
 logIO :: Level -> String -> IO ()
@@ -125,6 +103,13 @@ infoIO, warnIO, errIO :: String -> IO ()
 infoIO = logIO Info
 warnIO = logIO Warning
 errIO  = logIO Error
+
+labelIO :: String -> IO a -> IO a
+labelIO name m = do
+  hPutStrLn stderr $ "NOTE: entering " <> name
+  a <- m
+  hPutStrLn stderr $ "NOTE: exited " <> name
+  return a
 
 
 -- Laws
