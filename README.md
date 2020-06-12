@@ -117,6 +117,7 @@ cabal repl --enable-tests
     FE.runState @Int 0 . FE.runError @String $ errorAndState
 
     FE.run glitter
+    runGlitter glitter
 
 
 ## Abstraction
