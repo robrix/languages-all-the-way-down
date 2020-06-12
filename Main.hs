@@ -67,7 +67,7 @@ Aside:
 
 f $ x   (for pure function f and value x)
 is analogous to
-f =<< x (for pure function f and computation x)
+f =<< x (for monadic function f and computation x)
 -}
 
 
