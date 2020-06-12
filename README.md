@@ -183,6 +183,24 @@ This document is the outline for my ZuriHac 2020 talk _Languages All the Way Dow
 - admit interactions with other effects
 
 
+## Indications
+
+- need interface agreed upon by producers & consumers
+  - can change independently of one another
+  - otherwise coupling to types/implementations may not be as big of a deal
+- operations should be colocated with other effectful operations
+  - otherwise maybe just a typeclass against some data
+- tailor execution to different envs/inputs/situations
+  - e.g. dev/prod/testing
+- analysis/instrumentation
+
+- ideal case
+  - general; can define combinators abstracted over the effect interface
+    - e.g. parsers
+  - operations & laws are clear (& ideally easy to test)
+  - refined by experience!
+
+
 ## Conclusion
 
 - recap
