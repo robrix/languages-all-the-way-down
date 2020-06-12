@@ -31,6 +31,9 @@ main = return ()
 
 -- outline & code:
 -- https://github.com/robrix/languages-all-the-way-down
+
+-- more projects:
+-- https://github.com/github/semantic
 -- https://github.com/robrix/starlight
 
 -- me:
