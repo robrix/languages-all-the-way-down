@@ -14,7 +14,10 @@ import           Control.Effect.Logging
 import           Control.Monad.IO.Class
 import           Data.List              (intercalate)
 
-newtype LoggingT m a = LoggingT { runLogging :: ReaderC [String] m a }
+runLogging :: LoggingT m a -> m a
+runLogging (LoggingT m) = runReader [] m
+
+newtype LoggingT m a = LoggingT (ReaderC [String] m a)
   deriving (Applicative, Functor, Monad, MonadIO)
 
 instance (Algebra sig m, MonadIO m) => Algebra (Logging :+: sig) (LoggingT m) where
@@ -22,8 +25,8 @@ instance (Algebra sig m, MonadIO m) => Algebra (Logging :+: sig) (LoggingT m) wh
     ctx <- LoggingT $ asks displayContext
     liftIO $ putStrLn $ displayLevel lvl <> ": " <> "(" <> ctx <> ")" <> msg
     k
-  alg (L (Label name m k)) = do
-    res <- LoggingT $ local (name:) (runLogging m)
+  alg (L (Label name (LoggingT m) k)) = do
+    res <- LoggingT $ local (name:) m
     k res
   alg (R other)            = LoggingT (alg (R (handleCoercible other)))
 
