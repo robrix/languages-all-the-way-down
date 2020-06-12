@@ -241,6 +241,10 @@ cabal repl --enable-tests
   - analysis
   - repl
 
+  - systematization
+    - interpret effects into other effects
+    - automatically add logging to relevant sections of program
+
   - specific:
     - labelling is useful for more than just logging
     - logging & profiling are both instances of tracing
