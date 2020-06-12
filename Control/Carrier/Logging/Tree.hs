@@ -38,8 +38,10 @@ data Span = Span
   , messages :: [Message]
   , children :: [Span]
   }
+  deriving (Eq, Show)
 
 data Message = Message
   { level   :: Level
   , message :: String
   }
+  deriving (Eq, Show)
