@@ -2,6 +2,12 @@
 
 This document is the outline for my ZuriHac 2020 talk _Languages All the Way Down_.
 
+The code in this repository is intended to be explored from GHCI:
+
+```shell
+cabal repl --enable-tests
+```
+
 
 ## Introduction
 
