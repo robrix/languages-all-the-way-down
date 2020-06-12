@@ -162,18 +162,3 @@ simplify lhs using monad law:
   runState a (put b >> get) = runState b (return b)
 
 -}
-
-
-
--- desired properties:
--- - atomicity
--- - thread-local ordering
--- - labelling
-
-
-data Message = Message
-  { context :: [String]
-  , level   :: Level
-  , message :: String
-  }
-  deriving (Eq, Show)

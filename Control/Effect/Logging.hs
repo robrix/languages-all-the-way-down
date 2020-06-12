@@ -15,6 +15,12 @@ displayLevel level = case level of
   Error   -> "ERROR"
 
 
+-- desired properties:
+-- - atomicity
+-- - thread-local ordering
+-- - labelling contextualizes messages
+
+
 data Logging (m :: Type -> Type) k
   = Log Level String (m k)
   | forall a . Label String (m a) (a -> m k)
