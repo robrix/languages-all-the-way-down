@@ -29,7 +29,11 @@ main :: IO ()
 main = return ()
 
 
+-- outline & code:
 -- https://github.com/robrix/languages-all-the-way-down
+
+-- me:
+-- https://twitter.com/rob_rix
 
 
 double, incr, twoNPlusOne :: Num a => a -> a
