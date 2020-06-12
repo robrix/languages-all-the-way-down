@@ -12,7 +12,11 @@ cabal repl --enable-tests
 ## Introduction
 
 - me
-- languages?
+  - work
+    - techniques applied in `semantic`, `starlight`, etc.
+  - languages
+    - want to bring analysis to other langs
+    - want to bring compilers into libraries
 
 - caveats
   - law of the implement/“everything looks like a compilers problem”
