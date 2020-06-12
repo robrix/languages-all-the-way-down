@@ -113,6 +113,8 @@ labelIO name m = do
 
 {-
 
+State:
+
 get law:
   runState a (get >>= k)  = runState a (k a)
 put law:
@@ -142,5 +144,13 @@ instantiate k with return:
   runState a (put b >> get >>= return) = runState b (return b)
 simplify lhs using monad law:
   runState a (put b >> get) = runState b (return b)
+
+
+Error:
+
+throwError law:
+  runError (throwError e >>= k) === runError (throwError e)
+catchError law:
+  runError (throwError e `catchError` f) = runError (f e)
 
 -}
