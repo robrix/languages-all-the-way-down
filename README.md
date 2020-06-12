@@ -192,6 +192,19 @@ cabal repl --enable-tests
 - admit _useful_ variance in implementations
 - admit interactions with other effects
 
+- example:
+  - `State`:
+    - `StateT`
+    - `ST`
+    - `IORef`
+    - `STM` (caveat re: races w/ `modify`)
+    - `Codensity ((->) s)`
+    - OpenGL/GPU state
+    - write to disk?
+    - write to database?
+    - write to network?
+    - update interface à la shadow DOM?
+
 
 ## Indications
 
