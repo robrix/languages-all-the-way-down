@@ -46,6 +46,7 @@ test-suite languages-all-the-way-down
   other-modules:
     Control.Carrier.Logging.Identity
     Control.Carrier.Logging.IO
+    Control.Carrier.Logging.Tree
     Control.Effect.Logging
   build-depends:
     , async         ^>= 2.2
