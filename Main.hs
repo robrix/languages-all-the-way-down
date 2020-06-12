@@ -121,6 +121,14 @@ labelIO name m = do
 
 State:
 
+get :: Has (FE.State s) sig m =>      m s
+put :: Has (FE.State s) sig m => s -> m ()
+
+
+aside: functor law:
+  fmap f . fmap g = fmap (f . g)
+
+
 get law:
   runState a (get >>= k)  = runState a (k a)
 put law:
