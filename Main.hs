@@ -1,12 +1,18 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric              #-}
+{-# LANGUAGE FlexibleInstances          #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses      #-}
+{-# LANGUAGE TypeOperators              #-}
+{-# LANGUAGE UndecidableInstances       #-}
 module Main where
 
 import           Control.Carrier.Logging.Identity as Identity
 
 -- base
 import           Control.Monad                    ((<=<))
+import           Control.Monad.IO.Class
 import           Data.Functor.Identity
-import           GHC.Generics (Generic1)
+import           GHC.Generics                     (Generic1)
 import           System.IO                        (hPutStr, hPutStrLn, stderr)
 
 -- transformers
@@ -166,3 +172,13 @@ instance Effect   Glitter
 
 glitter :: Has Glitter sig m => m ()
 glitter = send $ Glitter (pure ())
+
+
+newtype GlitterT m a = GlitterT { runGlitter :: m a }
+  deriving (Applicative, Functor, Monad, MonadIO)
+
+instance (Algebra sig m, MonadIO m) => Algebra (Glitter :+: sig) (GlitterT m) where
+  alg (L (Glitter k)) = do
+    liftIO . hPutStrLn stderr $ replicate 10000 '✨'
+    k
+  alg (R other)       = GlitterT (alg (handleCoercible other))
