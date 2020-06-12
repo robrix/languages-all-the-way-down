@@ -5,8 +5,7 @@ import           Control.Carrier.Logging.Identity as Identity
 -- base
 import           Control.Monad                    ((<=<))
 import           Data.Functor.Identity
-import           Numeric                          (readDec, readSigned)
-import           System.IO                        (hPutStrLn, stderr)
+import           System.IO                        (hPutStr, hPutStrLn, stderr)
 
 -- transformers
 import           Control.Monad.Trans.Class
@@ -22,20 +21,19 @@ main :: IO ()
 main = return ()
 
 
-parse :: ReadS a -> String -> Maybe a
-parse parser input = case parser input of
-  [(a, "")] -> Just a
-  _         -> Nothing
+double, incr, twoNPlusOne :: Num a => a -> a
 
--- FIXME: rewrite
-match :: (a -> Bool) -> (a -> Maybe a)
-match f a
-  | f a       = Just a
-  | otherwise = Nothing
+double n = n * 2
+
+incr n = n + 1
+
+twoNPlusOne = incr . double
 
 
-parsePositiveDec :: String -> Maybe Int
-parsePositiveDec = match (>= 0) <=< parse (readSigned readDec)
+copyFileToStderr :: FilePath -> IO ()
+copyFileToStderr = hPutStr stderr <=< readFile
+
+
 
 {-
 Contrast:

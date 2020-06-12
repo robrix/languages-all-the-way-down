@@ -54,14 +54,15 @@ cabal repl --enable-tests
 
 - function composition
 - modularity
+
+    twoNPlusOne 3
+
 - more complicated control flow
   - errors
   - state
 - Kleisli composition
 
-    match (>= 0) <=< parse (readSigned readDec) $ "10"
-    match (>= 0) <=< parse (readSigned readDec) $ "-10"
-    match (>= 0) <=< parse (readSigned readDec) $ "cheese"
+    copyFileToStderr "secrets"
 
 
 ## Effects, informally
